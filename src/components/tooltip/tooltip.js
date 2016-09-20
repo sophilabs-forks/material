@@ -156,9 +156,12 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       });
 
       // Updates the aria-label when the element text changes. This watch
-      // doesn't need to be set up if the element doesn't have any data
-      // bindings.
-      if (element.text().indexOf($interpolate.startSymbol()) > -1) {
+      // doesn't need to be set up if the element doesn't have any two way
+      // data bindings.
+      var text = element.text();
+      var intSymbol = $interpolate.startSymbol();
+      var index = text.indexOf(intSymbol);
+      if (index > -1 && !text.substring(index + intSymbol.length).trim().startsWith('::')) {
         scope.$watch(function() {
           return element.text().trim();
         }, addAriaLabel);
